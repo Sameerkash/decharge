@@ -27,7 +27,7 @@ export class ChargerController {
     const [chargerPda] = getChargerPDA(chargerKey.publicKey);
 
     const nftMint = new web3.PublicKey(body.nftMintPublicKey);
-    const tokenProgram = new web3.PublicKey(body.tokenPublicKey);
+    const tokenProgram = new web3.PublicKey(body.tokenPublicKey); // USD
 
     const tx = await program.methods
       .createCharger()

@@ -1,17 +1,23 @@
 import { Wallet, web3 } from '@coral-xyz/anchor';
 import { Body, Controller, Post } from '@nestjs/common';
 import { getUserPDA } from 'src/core/pda';
-import { deChargeProgram } from 'src/core/program';
+import { airdrop, createConnection, deChargeProgram } from 'src/core/program';
 import { CreateUserRequest } from 'src/core/types/request';
-import { generateHash } from 'src/util/util';
 
 @Controller('user')
 export class UserController {
   @Post('create')
   async createUser(@Body() body: CreateUserRequest) {
-    const userWallet = new Wallet(web3.Keypair.generate());
+    const userKeys = web3.Keypair.generate();
+    const userWallet = new Wallet(userKeys);
     const program = deChargeProgram(userWallet);
-    const hashedPhoneNumber = generateHash(body.phoneNumber);
+    const hashedPhoneNumber = body.phoneNumber;
+
+    await airdrop(
+      createConnection(),
+      userWallet.publicKey,
+      web3.LAMPORTS_PER_SOL * 0.1,
+    );
 
     const [userPda] = getUserPDA(userWallet.publicKey);
 
@@ -30,8 +36,12 @@ export class UserController {
       });
 
     return {
-      userPda: userPda,
-      tx: tx,
+      user: {
+        publicKey: userWallet.publicKey,
+        secretKey: userKeys.secretKey,
+        userPda: userPda,
+      },
+      txHash: tx,
     };
   }
 }
