@@ -5,15 +5,24 @@ export type CreateUserRequest = {
 export type CreateChargerStation = {
   ownerKey: ArrayBuffer;
   operatorKey: ArrayBuffer;
-  chargerKey: ArrayBuffer;
-  nftMintPublicKey: string;
-  tokenPublicKey: string;
 };
 
 export type CreateChargerSession = {
+  amount: number;
+
+  userKey: ArrayBuffer;
+  userAta: string;
+
   ownerKey: ArrayBuffer;
-  operatorKey: ArrayBuffer;
-  chargerKey: ArrayBuffer;
+  ownerAta: string;
+
+  operatoryPublicKey: string;
+  operatoryAta: string;
+
+  chargerPublicKey: string;
+  chargerPda: string;
+
   nftMintPublicKey: string;
-  tokenPublicKey: string;
+  nftOwnerPublicKey: string;
+  nftOwnerAta: string;
 };
