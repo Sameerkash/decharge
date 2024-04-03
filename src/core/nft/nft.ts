@@ -1,7 +1,7 @@
-import { createConnection } from '../program';
+import { connection } from '../program';
 import { Metaplex } from '@metaplex-foundation/js';
 
-const METAPLEX = Metaplex.make(createConnection());
+const METAPLEX = Metaplex.make(connection);
 
 export async function mintNft(name, owner) {
   const { nft } = await METAPLEX.nfts().create(

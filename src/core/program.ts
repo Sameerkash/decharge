@@ -10,30 +10,29 @@ import {
 import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token';
 
 export const PROGRAM_ID = new web3.PublicKey(
-  'MfQ5MtGrou6TxQuBSGAFiQMuPTUWe7Y7kscbswUw31c',
+  '3qUwvcPVu8LLbjgZmNeMkfkTbVhXWoLmuwiJ3XHscawC',
 );
 
-let connection: web3.Connection;
+export const connection: web3.Connection = new web3.Connection(
+  'https://api.devnet.solana.com',
+  'confirmed',
+);
 
-export function createConnection(devnet = true) {
-  if (devnet) {
-    if (!connection) {
-      connection = new web3.Connection(
-        'https://api.devnet.solana.com',
-        'confirmed',
-      );
-    }
-    return connection;
-  } else {
-    return new web3.Connection('http://localhost:8899', 'confirmed');
-  }
-}
+// export function createConnection() {
+//   if (!connection) {
+//     connection = new web3.Connection(
+//       'https://api.devnet.solana.com',
+//       'confirmed',
+//     );
+//   }
+//   return connection;
+// }
 
 export const deChargeProgram = (wallet: Wallet): Program<Dpl> => {
   return new Program(
     IDL,
     PROGRAM_ID,
-    new AnchorProvider(createConnection(), wallet, {
+    new AnchorProvider(connection, wallet, {
       commitment: 'confirmed',
     }),
   ) as unknown as Program<Dpl>;
@@ -41,11 +40,7 @@ export const deChargeProgram = (wallet: Wallet): Program<Dpl> => {
 
 const mainKeypair = web3.Keypair.fromSecretKey(Buffer.from(mainKey));
 
-export async function airdrop(
-  connection: web3.Connection,
-  to: web3.PublicKey,
-  amount?: number,
-) {
+export async function airdrop(to: web3.PublicKey, amount?: number) {
   // transfer from the default account to the new account
   const tx = new web3.Transaction().add(
     web3.SystemProgram.transfer({
@@ -59,19 +54,22 @@ export async function airdrop(
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
   tx.sign(mainKeypair);
 
-  await connection.sendRawTransaction(tx.serialize());
+  const hash = await connection.sendRawTransaction(tx.serialize());
+  console.log({ hash });
 }
 
-export async function airdropUSDC({ senderKeypair, senderTokenAccount }) {
+export async function airdropUSDC({ receiverTokenAccount }) {
   const mainWallet = web3.Keypair.fromSecretKey(Buffer.from(mainKey));
   const mainWalletAta = await getOrCreateTokenAccountAddress(mainWallet);
 
+  console.log({ mainWalletAta });
+
   const signature = await transfer(
-    createConnection(),
-    senderKeypair,
-    senderTokenAccount.address,
+    connection,
+    mainWallet,
     mainWalletAta.address,
-    senderKeypair.publicKey,
+    receiverTokenAccount.address,
+    mainWallet.publicKey,
     500000,
   );
 
@@ -79,14 +77,19 @@ export async function airdropUSDC({ senderKeypair, senderTokenAccount }) {
 }
 
 export async function getOrCreateTokenAccountAddress(
-  senderKeypair: web3.Keypair,
+  accountKeyPair: web3.Keypair,
 ) {
+  const mainWallet = web3.Keypair.fromSecretKey(Buffer.from(mainKey));
   const tokenAccount = await getOrCreateAssociatedTokenAccount(
-    createConnection(),
-    senderKeypair,
+    connection,
+    mainWallet,
     new PublicKey(USDC_DEVNET_ADDRESS),
-    senderKeypair.publicKey,
+    accountKeyPair.publicKey,
+    true,
+    'confirmed',
   );
+
+  console.log({ tokenAccount });
 
   return tokenAccount;
 }

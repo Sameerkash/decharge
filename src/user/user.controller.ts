@@ -3,8 +3,6 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { getUserPDA } from 'src/core/pda';
 import {
   airdrop,
-  airdropUSDC,
-  createConnection,
   deChargeProgram,
   getOrCreateTokenAccountAddress,
 } from 'src/core/program';
@@ -19,22 +17,18 @@ export class UserController {
     const userWallet = new Wallet(userKeys);
     const program = deChargeProgram(userWallet);
     const hashedPhoneNumber = generatePhoneNumberHash(body.phoneNumber);
+    console.log({ userKeys, hashedPhoneNumber }, hashedPhoneNumber.length);
 
-    await airdrop(
-      createConnection(),
-      userWallet.publicKey,
-      web3.LAMPORTS_PER_SOL * 0.1,
-    );
-
-    console.log({ userKeys });
+    await airdrop(userWallet.publicKey);
 
     const userAta = await getOrCreateTokenAccountAddress(userKeys);
     console.log({ userAta });
 
-    await airdropUSDC({
-      senderKeypair: userKeys,
-      senderTokenAccount: userAta,
-    });
+    // await airdropUSDC({
+    //   receiverTokenAccount: userAta,
+    // });
+
+    // return {};
 
     const [userPda] = getUserPDA(userWallet.publicKey);
 
@@ -52,16 +46,16 @@ export class UserController {
         maxRetries: 3,
       });
 
-    console.log({ userAta, userPda, hashedPhoneNumber });
+    console.log({ userAta, userPda, hashedPhoneNumber, tx });
     return {
       user: {
         publicKey: userWallet.publicKey,
         secretKey: userKeys.secretKey,
-        userPda: userPda,
-        userAta: userAta,
+        userPda: userPda.toString(),
+        userAta: userAta.address.toString(),
         hashedPhoneNumber: hashedPhoneNumber,
       },
-      txHash: tx,
+      // txHash: tx,
     };
   }
 }

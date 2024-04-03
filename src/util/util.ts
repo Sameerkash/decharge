@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 
 export function generatePhoneNumberHash(phoneNumber: string): string {
   // Create a SHA-256 hash object
-  const hash = crypto.createHash('sha256');
+  const hash = crypto.createHash('sha512');
 
   // Update the hash object with the phone number
   hash.update(phoneNumber);
