@@ -20,22 +20,18 @@ export class ChargerController {
   async createCharger(@Body() body: CreateChargerStation) {
     const ownerkeys = web3.Keypair.fromSecretKey(Buffer.from(body.ownerKey));
     const ownerWallet = new Wallet(ownerkeys);
+    const ownerAta = await getOrCreateTokenAccountAddress(ownerkeys);
 
     const operatorWallet = new Wallet(
       web3.Keypair.fromSecretKey(Buffer.from(body.operatorKey)),
     );
 
-    const ownerAta = await getOrCreateTokenAccountAddress(ownerkeys);
-
     const chargerKeys = web3.Keypair.generate();
     const chargerWallet = new Wallet(chargerKeys);
-
-    const program = deChargeProgram(ownerWallet);
     const [chargerPda] = getChargerPDA(chargerWallet.publicKey);
 
-    const nftMint = await mintNft('DeCharge Ownership', ownerWallet.publicKey);
-
-    console.log({ nftMint, ownerAta });
+    const program = deChargeProgram(ownerWallet);
+    const nftMint = await mintNft('DeCharge Ownership', ownerkeys);
 
     const tx = await program.methods
       .createCharger()
@@ -59,14 +55,14 @@ export class ChargerController {
       charger: {
         chargerPublicKey: chargerKeys.publicKey,
         chargerKey: chargerKeys.secretKey,
-        chargerPda: chargerPda,
+        chargerPda: chargerPda.toString(),
       },
       nft: {
-        address: nftMint.address,
+        address: nftMint.address.toString(),
         ownerAddress: ownerWallet.publicKey,
-        ownerAta: ownerAta,
+        ownerAta: ownerAta.address.toString(),
       },
-      tx,
+      txHash: tx,
     };
   }
 
