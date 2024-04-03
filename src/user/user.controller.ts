@@ -55,7 +55,7 @@ export class UserController {
         userAta: userAta.address.toString(),
         hashedPhoneNumber: hashedPhoneNumber,
       },
-      // txHash: tx,
+      txHash: tx,
     };
   }
 }
