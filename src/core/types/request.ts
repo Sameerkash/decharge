@@ -9,15 +9,10 @@ export type CreateChargerStation = {
 
 export type CreateChargerSession = {
   amount: number;
-
   userKey: ArrayBuffer;
-  userAta: string;
 
-  ownerKey: ArrayBuffer;
-  ownerAta: string;
-
-  operatoryPublicKey: string;
-  operatoryAta: string;
+  operatorPublicKey: string;
+  operatorAta: string;
 
   chargerPublicKey: string;
   chargerPda: string;

@@ -68,14 +68,11 @@ export class ChargerController {
 
   @Post('session')
   async createChargerSession(@Body() body: CreateChargerSession) {
-    const ownerWallet = new Wallet(
-      web3.Keypair.fromSecretKey(Buffer.from(body.ownerKey)),
-    );
-    const userWallet = new Wallet(
-      web3.Keypair.fromSecretKey(Buffer.from(body.userKey)),
-    );
+    const userKeys = web3.Keypair.fromSecretKey(Buffer.from(body.userKey));
+    const userWallet = new Wallet(userKeys);
+    const userAta = await getOrCreateTokenAccountAddress(userKeys);
 
-    const program = deChargeProgram(ownerWallet);
+    const program = deChargeProgram(userWallet);
     const tx = await program.methods
       .chargerSession({
         amount: body.amount,
@@ -84,13 +81,13 @@ export class ChargerController {
         charger: body.chargerPublicKey,
         user: userWallet.publicKey,
         chargerPda: body.chargerPda,
-        operator: body.operatoryPublicKey,
-        operatorAta: body.operatoryAta,
+        operator: body.operatorPublicKey,
+        operatorAta: body.operatorAta,
         nftMint: body.nftMintPublicKey,
         nftMintOwner: body.nftOwnerPublicKey,
         nftMintOwnerAta: body.nftOwnerAta,
         tokenProgram: TOKEN_PROGRAM_ID,
-        userAta: body.userAta,
+        userAta: userAta.address,
         mint: USDC_DEVNET_ADDRESS,
       })
       .signers([userWallet.payer])
