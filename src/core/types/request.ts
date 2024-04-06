@@ -11,6 +11,7 @@ export type CreateChargerSession = {
   amount: number;
   userKey: ArrayBuffer;
 
+  operatorKey: ArrayBuffer;
   operatorPublicKey: string;
   operatorAta: string;
 

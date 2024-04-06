@@ -79,17 +79,17 @@ export type Dpl = {
         },
         {
           name: 'userAta';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
           name: 'charger';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
           name: 'chargerPda';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -109,7 +109,7 @@ export type Dpl = {
         },
         {
           name: 'nftMintOwnerAta';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -119,7 +119,7 @@ export type Dpl = {
         },
         {
           name: 'operatorAta';
-          isMut: false;
+          isMut: true;
           isSigner: false;
         },
         {
@@ -286,17 +286,17 @@ export const IDL: Dpl = {
         },
         {
           name: 'userAta',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
           name: 'charger',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
           name: 'chargerPda',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -316,7 +316,7 @@ export const IDL: Dpl = {
         },
         {
           name: 'nftMintOwnerAta',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {
@@ -326,7 +326,7 @@ export const IDL: Dpl = {
         },
         {
           name: 'operatorAta',
-          isMut: false,
+          isMut: true,
           isSigner: false,
         },
         {

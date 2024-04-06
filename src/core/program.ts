@@ -10,7 +10,7 @@ import {
 import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token';
 
 export const PROGRAM_ID = new web3.PublicKey(
-  '3qUwvcPVu8LLbjgZmNeMkfkTbVhXWoLmuwiJ3XHscawC',
+  '8uwxL2etDeowSko5FXiZLfUJCU9qwFQsmsqrLKjQpFV4',
 );
 
 export const connection: web3.Connection = new web3.Connection(

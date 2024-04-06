@@ -1,4 +1,4 @@
-import { Wallet, web3 } from '@coral-xyz/anchor';
+import { BN, Wallet, web3 } from '@coral-xyz/anchor';
 import { TOKEN_PROGRAM_ID } from '@coral-xyz/anchor/dist/cjs/utils/token';
 
 import { Body, Controller, Post } from '@nestjs/common';
@@ -73,28 +73,38 @@ export class ChargerController {
     const userAta = await getOrCreateTokenAccountAddress(userKeys);
 
     const program = deChargeProgram(userWallet);
+    const operatorATA = new web3.PublicKey(body.operatorAta);
+
+    /// Pub key defintions
+    const chargerPubKey = new web3.PublicKey(body.chargerPublicKey);
+    const chargerPda = new web3.PublicKey(body.chargerPda);
+    const operatorPublicKey = new web3.PublicKey(body.operatorPublicKey);
+    const nftMint = new web3.PublicKey(body.nftMintPublicKey);
+    const nftMintOwner = new web3.PublicKey(body.nftOwnerPublicKey);
+    const nftOwnerAta = new web3.PublicKey(body.nftOwnerAta);
+
+    const amount = new BN(body.amount);
+
     const tx = await program.methods
-      .chargerSession({
-        amount: body.amount,
-      })
+      .chargerSession(amount)
       .accounts({
-        charger: body.chargerPublicKey,
+        charger: chargerPubKey,
         user: userWallet.publicKey,
-        chargerPda: body.chargerPda,
-        operator: body.operatorPublicKey,
-        operatorAta: body.operatorAta,
-        nftMint: body.nftMintPublicKey,
-        nftMintOwner: body.nftOwnerPublicKey,
-        nftMintOwnerAta: body.nftOwnerAta,
+        chargerPda: chargerPda,
+        operator: operatorPublicKey,
+        operatorAta: operatorATA,
+        nftMint: nftMint,
+        nftMintOwner: nftMintOwner,
+        nftMintOwnerAta: nftOwnerAta,
         tokenProgram: TOKEN_PROGRAM_ID,
         userAta: userAta.address,
-        mint: USDC_DEVNET_ADDRESS,
+        mint: new web3.PublicKey(USDC_DEVNET_ADDRESS),
       })
       .signers([userWallet.payer])
       .rpc({
         skipPreflight: false,
         commitment: 'confirmed',
-        maxRetries: 3,
+        maxRetries: 0,
       });
 
     return {
