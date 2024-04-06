@@ -1,10 +1,17 @@
 import { BN, Wallet, web3 } from '@coral-xyz/anchor';
 import { TOKEN_PROGRAM_ID } from '@coral-xyz/anchor/dist/cjs/utils/token';
 
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { mintNft } from 'src/core/nft/nft';
 import { getChargerPDA } from 'src/core/pda';
 import {
+  connection,
   deChargeProgram,
   getOrCreateTokenAccountAddress,
 } from 'src/core/program';
@@ -110,5 +117,34 @@ export class ChargerController {
     return {
       tx,
     };
+  }
+
+  @Post('session/status')
+  async getChargerSessionPaymentStatus(@Body() body) {
+    const txHash = body.tx;
+
+    if (!txHash)
+      throw new HttpException('field tx is requrired', HttpStatus.BAD_REQUEST);
+
+    try {
+      const response = await connection.getSignatureStatus(txHash);
+      if (response.value?.err) {
+        return {
+          message: 'Some Error occured in the tranmsaction',
+          error: response.value?.err,
+        };
+      }
+      return {
+        message: 'Current Transaction status',
+        status: response.value?.confirmationStatus,
+        confirmedBlocks: response.value?.confirmations,
+      };
+    } catch (error) {
+      console.log({ error });
+      throw new HttpException(
+        'Something went wrong ',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
