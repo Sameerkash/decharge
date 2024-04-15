@@ -8,7 +8,7 @@
 
 ### Demo
 
-![video](https://www.youtube.com/embed/j_5Wkz73fhY?si=EskaNkgKH5DmF6S)
+[video](https://www.youtube.com/embed/j_5Wkz73fhY?si=EskaNkgKH5DmF6S)
 
 ## Architecture
 
