@@ -4,13 +4,14 @@ import { mainKey } from './keys/main.key';
 import { PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@coral-xyz/anchor/dist/cjs/utils/token';
 import {
+  BONK_MINT_DEVENET,
   SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
   USDC_DEVNET_ADDRESS,
 } from './types/address';
 import { getOrCreateAssociatedTokenAccount, transfer } from '@solana/spl-token';
 
 export const PROGRAM_ID = new web3.PublicKey(
-  '8uwxL2etDeowSko5FXiZLfUJCU9qwFQsmsqrLKjQpFV4',
+  'A844xykG4pu51sT6jGMFD9ZdmX7SbomBQKDvyuC379DC',
 );
 
 export const connection: web3.Connection = new web3.Connection(
@@ -84,6 +85,24 @@ export async function getOrCreateTokenAccountAddress(
     connection,
     mainWallet,
     new PublicKey(USDC_DEVNET_ADDRESS),
+    accountKeyPair.publicKey,
+    true,
+    'confirmed',
+  );
+
+  console.log({ tokenAccount });
+
+  return tokenAccount;
+}
+
+export async function getOrCreateBonkTokenAccountAddress(
+  accountKeyPair: web3.Keypair,
+) {
+  const mainWallet = web3.Keypair.fromSecretKey(Buffer.from(mainKey));
+  const tokenAccount = await getOrCreateAssociatedTokenAccount(
+    connection,
+    mainWallet,
+    new PublicKey(BONK_MINT_DEVENET),
     accountKeyPair.publicKey,
     true,
     'confirmed',

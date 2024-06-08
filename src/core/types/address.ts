@@ -6,3 +6,5 @@ export const USDC_DEVNET_ADDRESS =
 export const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
 );
+
+export const BONK_MINT_DEVENET = 'BoNKMTTTuHSXBZT6NmctswraMqhRkS6qP7AcTR2SHEkx';

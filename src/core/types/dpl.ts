@@ -123,6 +123,26 @@ export type Dpl = {
           isSigner: false;
         },
         {
+          name: 'bonkMint';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'bonkVaultAuthority';
+          isMut: true;
+          isSigner: true;
+        },
+        {
+          name: 'bonkVaultAta';
+          isMut: false;
+          isSigner: false;
+        },
+        {
+          name: 'bonkReceiverAta';
+          isMut: false;
+          isSigner: false;
+        },
+        {
           name: 'tokenProgram';
           isMut: false;
           isSigner: false;
@@ -189,16 +209,11 @@ export type Dpl = {
   errors: [
     {
       code: 6000;
-      name: 'PhoneNumberHash32Bytes';
-      msg: 'Phone number hash must be 32 bytes';
-    },
-    {
-      code: 6001;
       name: 'InvalidMint';
       msg: 'Invalid mint';
     },
     {
-      code: 6002;
+      code: 6001;
       name: 'InvalidAmount';
       msg: 'Invalid amount';
     },
@@ -330,6 +345,26 @@ export const IDL: Dpl = {
           isSigner: false,
         },
         {
+          name: 'bonkMint',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'bonkVaultAuthority',
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: 'bonkVaultAta',
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: 'bonkReceiverAta',
+          isMut: false,
+          isSigner: false,
+        },
+        {
           name: 'tokenProgram',
           isMut: false,
           isSigner: false,
@@ -396,16 +431,11 @@ export const IDL: Dpl = {
   errors: [
     {
       code: 6000,
-      name: 'PhoneNumberHash32Bytes',
-      msg: 'Phone number hash must be 32 bytes',
-    },
-    {
-      code: 6001,
       name: 'InvalidMint',
       msg: 'Invalid mint',
     },
     {
-      code: 6002,
+      code: 6001,
       name: 'InvalidAmount',
       msg: 'Invalid amount',
     },

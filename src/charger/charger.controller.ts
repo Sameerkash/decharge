@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
+import { mainKey } from 'src/core/keys/main.key';
 import { mintNft } from 'src/core/nft/nft';
 import { getChargerPDA } from 'src/core/pda';
 import {
@@ -15,7 +16,7 @@ import {
   deChargeProgram,
   getOrCreateTokenAccountAddress,
 } from 'src/core/program';
-import { USDC_DEVNET_ADDRESS } from 'src/core/types/address';
+import { BONK_MINT_DEVENET, USDC_DEVNET_ADDRESS } from 'src/core/types/address';
 import {
   CreateChargerSession,
   CreateChargerStation,
@@ -78,6 +79,7 @@ export class ChargerController {
     const userKeys = web3.Keypair.fromSecretKey(Buffer.from(body.userKey));
     const userWallet = new Wallet(userKeys);
     const userAta = await getOrCreateTokenAccountAddress(userKeys);
+    const userBonkAta = await getOrCreateTokenAccountAddress(userKeys);
 
     const program = deChargeProgram(userWallet);
     const operatorATA = new web3.PublicKey(body.operatorAta);
@@ -89,6 +91,11 @@ export class ChargerController {
     const nftMint = new web3.PublicKey(body.nftMintPublicKey);
     const nftMintOwner = new web3.PublicKey(body.nftOwnerPublicKey);
     const nftOwnerAta = new web3.PublicKey(body.nftOwnerAta);
+
+    /// Bonk airdrop from main account
+    const mainKeypair = web3.Keypair.fromSecretKey(Buffer.from(mainKey));
+    const mainWallet = new Wallet(userKeys);
+    const mainWalletBonkAta = await getOrCreateTokenAccountAddress(mainKeypair);
 
     const amount = new BN(body.amount);
 
@@ -106,8 +113,12 @@ export class ChargerController {
         tokenProgram: TOKEN_PROGRAM_ID,
         userAta: userAta.address,
         mint: new web3.PublicKey(USDC_DEVNET_ADDRESS),
+        bonkMint: BONK_MINT_DEVENET,
+        bonkReceiverAta: userBonkAta.address,
+        bonkVaultAta: mainWalletBonkAta.address,
+        bonkVaultAuthority: mainWallet.publicKey,
       })
-      .signers([userWallet.payer])
+      .signers([userWallet.payer, mainWallet.payer])
       .rpc({
         skipPreflight: false,
         commitment: 'confirmed',
