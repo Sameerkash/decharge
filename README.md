@@ -1,6 +1,11 @@
-## Decentralized Physical Infrastrcture for EV charging stattions
+## Decentralized Physical Infrastructure for EV charging stations
 
 ## [Project Overview](https://github.com/drprk/DeCharge)
+
+**Winner - DePin Runner up - USD 20,000**
+
+<img width="1258" alt="Solana Depin - Runner up Decharge" src="https://github.com/user-attachments/assets/3099b784-f29c-4f4d-8e89-bb881506dacc">
+
 
 **Submitted to**
 
@@ -12,4 +17,5 @@
 
 ## Architecture
 
-![img](https://private-user-images.githubusercontent.com/88657058/320312279-e9ff9d6c-bba6-4b93-91d3-c919b3065a91.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTMxOTQ4MjUsIm5iZiI6MTcxMzE5NDUyNSwicGF0aCI6Ii84ODY1NzA1OC8zMjAzMTIyNzktZTlmZjlkNmMtYmJhNi00YjkzLTkxZDMtYzkxOWIzMDY1YTkxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA0MTUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNDE1VDE1MjIwNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWNlYjFkNTg4Yzk3MDc2MDMzNGZjZWZkMTYzOTk0ZDZkZWUwOGMzOGNiNmMxNmY0NDE5NDBmNTkzMzI1ZmRkYmUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.K7zzRQH42gB_Scr3LRQabsJIkz4jUpb0spjY8TMQtmA)
+
+<img width="841" alt="Architecture" src="https://github.com/user-attachments/assets/277043cf-ca27-4bba-aea4-88be80661d6d">
